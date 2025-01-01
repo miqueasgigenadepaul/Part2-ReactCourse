@@ -11,7 +11,7 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-   
+
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0)) 
   // votes is an array that contains the number of votes for each anecdote
@@ -54,13 +54,28 @@ const App = () => {
     console.log("votes", updateVotes)
     setVotes(updateVotes)
   }
+
+  let maximum = 0
+  const theMostVotes = () => {
+    for (let i = 0; i < votes.length; i++) {
+      if (votes[i] > votes[maximum]) {
+        maximum = i // current index of the votes array
+      }
+    }
+    console.log(maximum)
+    return anecdotes[maximum] // returns the anecdote at that index
+  }
   
   return (
     <div>
-      <button onClick = {setToSelected}>next anecdote</button>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
+      <br/>
+      <button onClick = {setToSelected}>next anecdote</button>
       <p>has {votes[selected]} votes</p>
       <button onClick = {setToVotes}>votes</button>
+      <h1>Anecdote with most votes</h1>
+      <p>{theMostVotes()}</p>
     </div>
   )
 }
