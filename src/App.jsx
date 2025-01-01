@@ -13,8 +13,11 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0)) 
+  // votes is an array that contains the number of votes for each anecdote
+  // this array is filled with zeros with the prototype fill method
 
-  // EXAMPLES with Math.floor() and Math.random()
+  // EXAMPLES with Math.floor() and Math.random() 
 
   /* console.log(Math.floor(Math.random() * 10)) returns a random integer from 0 to 9
      console.log(Math.floor(Math.random() * 11)) returns a random integer from 0 to 10
@@ -29,11 +32,35 @@ const App = () => {
     console.log(updateSelected)
     setSelected(updateSelected)
   }
+    
+  /*  
+      const points = [1, 2, 3, 4, 5, 6, 7, 8]
+      const copy = [...points]
 
+      console.log(copy)
+      // increment the value in position 2 by one
+      copy[2] += 1  
+      console.log(copy) // [1, 2, 4, 4, 5, 6, 7, 8]
+
+      // how to create a zero-filled array of the desired length
+      // Array.prototype.fill()
+      console.log(copy.fill(0)) // [0,0,0,0] 
+
+  */
+
+  const setToVotes = () => {
+    const updateVotes = [...votes] // create a copy of the votes array
+    updateVotes[selected] = updateVotes[selected] + 1
+    console.log("votes", updateVotes)
+    setVotes(updateVotes)
+  }
+  
   return (
     <div>
       <button onClick = {setToSelected}>next anecdote</button>
       {anecdotes[selected]}
+      <p>has {votes[selected]} votes</p>
+      <button onClick = {setToVotes}>votes</button>
     </div>
   )
 }
