@@ -1,80 +1,41 @@
-import {useState} from 'react'
-
-const Button = (props) => {
-  return(
-    <div>
-      <button onClick = {props.handleClick}>{props.text}</button>
-    </div>
-  )
-}
-
-const StatisticLine = ({text, value}) => {
-  return (
-    <>
-      <td>{text}</td>
-      <td>{value}</td>
-    </>
-  )
-}
-
-const Statistics = ({good, neutral, bad, total, average, positive}) => {
-  
-  return (
-    <div>
-      <table>
-        <tbody>
-          <tr><StatisticLine text = "Good" value = {good} /></tr>
-          <tr><StatisticLine text = "Neutral" value = {neutral} /></tr>
-          <tr><StatisticLine text = "Bad" value = {bad} /></tr>
-          <tr><StatisticLine text = "All" value = {total} /></tr>
-          <tr><StatisticLine text = "Average" value = {average} /></tr>
-          <tr><StatisticLine text = "Positive" value = {positive} /></tr>
-        </tbody>
-      </table>
-    </div>
-  )
-}
+import { useState } from 'react'
 
 const App = () => {
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ]
+   
+  const [selected, setSelected] = useState(0)
 
-  const total = good + neutral + bad 
-  const average = (good * 1 + neutral * 0 + bad * (-1)) / total
-  const positive = good / total 
+  // EXAMPLES with Math.floor() and Math.random()
 
-    if (total === 0) {
-      return (
-      <div>
-        <h1>give feedback</h1>
-        <Button handleClick = {() => setGood(good + 1)} text = "good"/>
-        <Button handleClick = {() => setNeutral(neutral + 1)} text = "neutral"/>
-        <Button handleClick = {() => setBad(bad + 1)} text = "bad" />
-        <h1>statistics</h1>
-        <p>No feedback given</p>
-      </div> 
-      )
-    }
+  /* console.log(Math.floor(Math.random() * 10)) returns a random integer from 0 to 9
+     console.log(Math.floor(Math.random() * 11)) returns a random integer from 0 to 10
+     console.log(Math.floor(Math.random() * 100)) return a random integer from 0 to 100
+     console.log(Math.floor(Math.random() * 10) + 1) return a random integer from 0 to 10
+  */
 
-    return (
-      <div>
-        <h1>give feedback</h1>
-        <Button handleClick = {() => setGood(good + 1)} text = "good"/>
-        <Button handleClick = {() => setNeutral(neutral + 1)} text = "neutral"/>
-        <Button handleClick = {() => setBad(bad + 1)} text = "bad" />
 
-        <h1>statistics</h1>
-        <Statistics 
-        good = {good}
-        neutral = {neutral}
-        bad = {bad}
-        total = {total}
-        average = {average}
-        positive = {positive}
-        />
-      </div>
-    )   
+  const setToSelected = () => {
+    // random integer between 0 and 7 (because there are 8 anecdotes)
+    const updateSelected = Math.floor(Math.random() * 8) 
+    console.log(updateSelected)
+    setSelected(updateSelected)
+  }
+
+  return (
+    <div>
+      <button onClick = {setToSelected}>next anecdote</button>
+      {anecdotes[selected]}
+    </div>
+  )
 }
 
-  export default App
+export default App
