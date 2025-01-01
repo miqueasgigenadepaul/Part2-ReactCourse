@@ -1,4 +1,4 @@
-// COURSE INFO STEP 1
+// COURSE INFO STEP 2
 const Header = (props) => {
   console.log(props)
   return (
@@ -8,13 +8,19 @@ const Header = (props) => {
   )
 }
 
+const Part = (props) => {
+  return (
+    <p>{props.name} {props.exercises}</p>
+  )
+}
+
 const Content = (props) => {
   console.log(props)
   return (
     <div>
-      <p>Part 1: {props.part1}, number of exercises: {props.exercises1}</p>
-      <p>Part 2: {props.part2}, number of exercises: {props.exercises2}</p>
-      <p>Part 3: {props.part3}, number of exercises: {props.exercises3}</p>
+      <Part name = {props.part1} exercises = {props.exercises1}/>
+      <Part name = {props.part2} exercises = {props.exercises2}/>
+      <Part name = {props.part3} exercises = {props.exercises3}/>
     </div>
   )
 }
