@@ -15,12 +15,21 @@ const Header = (props) => {
     )
   }
   
+  const Total = ({course}) => {
+    let sum = 0 
+    for (let i = 0; i < course.parts.length; i++) {
+      sum = sum + course.parts[i].exercises
+    }
+    return <p><b>total of {sum} exercises</b></p>
+  }
+  
   const Course = ({course}) => {
     console.log(course)
     return (
       <div>
         <Header course = {course.name}/>
         <Content course = {course}/>
+        <Total course = {course}/>
       </div>
     )
   }
@@ -44,6 +53,11 @@ const Header = (props) => {
           name: 'State of a component',
           exercises: 14,
           id: 3
+        },
+        {
+          name: 'Redux',
+          exercises: 11,
+          id: 4
         }
       ]
     }
