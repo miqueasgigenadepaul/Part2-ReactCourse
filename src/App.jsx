@@ -16,11 +16,11 @@ const Header = (props) => {
   }
   
   const Total = ({course}) => {
-    let sum = 0 
-    for (let i = 0; i < course.parts.length; i++) {
-      sum = sum + course.parts[i].exercises
-    }
-    return <p><b>total of {sum} exercises</b></p>
+    const total = course.parts.reduce((sum,order) => {
+      console.log("what is happening?", sum, order)
+      return sum + order.exercises
+    }, 0)
+    return <p><b>total of {total} exercises</b></p>
   }
   
   const Course = ({course}) => {
