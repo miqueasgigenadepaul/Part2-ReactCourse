@@ -9,7 +9,7 @@ const App = () => {
 
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
-      setNotes(initialNotes)
+      setNotes((initialNotes))
     })
   }, [])
 
@@ -56,7 +56,7 @@ const App = () => {
         </button>
       </div>
       <ul>
-        {notesToShow.map((note) => (
+        {Array.isArray(notesToShow) && notesToShow.map((note) => (
           <Note
             key={note.id}
             note={note}
