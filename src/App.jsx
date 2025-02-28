@@ -12,7 +12,15 @@ const App = () => {
 
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
-      setNotes(initialNotes)
+      if (Array.isArray(initialNotes)) {
+        setNotes(initialNotes)
+      } else {
+        console.error('La respuesta del servidor no es un array:', initialNotes)
+        setNotes([]) // Evitar que notesToShow sea undefined)
+      }
+    }).catch(error => {
+      console.error('Error al obtener notas:', error)
+      setNotes([]) // En caso de error, asignar un array vacío
     })
   }, [])
 
