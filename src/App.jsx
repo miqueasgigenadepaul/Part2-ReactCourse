@@ -1,91 +1,60 @@
 import { useState, useEffect } from 'react'
 import Footer from './components/Footer'
-import Note from './components/Note'
-import Notification from './components/Notification'
-import noteService from './services/notes'
+import personService from './services/persons'
 
 const App = () => {
-  const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('')
+  const [persons, setPersons] = useState([])
+  const [newName, setNewName] = useState('')
+  const [newPhone, setNewPhone] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
-    noteService.getAll().then((initialNotes) => {
-      if (Array.isArray(initialNotes)) {
-        setNotes(initialNotes)
+    personService.getAll().then((initialPersons) => {
+      if (Array.isArray(initialPersons)) {
+        setPersons(initialPersons)
       } else {
-        console.error('La respuesta del servidor no es un array:', initialNotes)
-        setNotes([]) // Evitar que notesToShow sea undefined)
+        console.error('La respuesta del servidor no es un array:', initialPersons)
+        setPersons([])
       }
     }).catch(error => {
-      console.error('Error al obtener notas:', error)
-      setNotes([]) // En caso de error, asignar un array vacío
+      console.error('Error al obtener Personas:', error)
+      setPersons([]) 
     })
   }, [])
 
-  const addNote = (event) => {
+  const addPerson = (event) => {
     event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      important: Math.random() > 0.5,
+    const personObject = {
+      name: newName,
+      phone: newPhone,
     }
 
-    noteService.create(noteObject).then((returnedNote) => {
-      setNotes(notes.concat(returnedNote))
-      setNewNote('')
+    personService.create(personObject).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson))
+      setNewName('')
+      setNewPhone('')
     })
   }
 
-  const toggleImportanceOf = (id) => {
-    const note = notes.find((n) => n.id === id)
-    const changedNote = { ...note, important: !note.important }
-
-    noteService
-      .update(id, changedNote)
-      .then((returnedNote) => {
-        setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)))
-      })
-      .catch((error) => {
-        setErrorMessage(
-          `Note '${note.content}' was already removed from server`
-        )
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-        setNotes(notes.filter((n) => n.id !== id))
-      })
-  }
-
-  const handleNoteChange = (event) => {
-    setNewNote(event.target.value)
-  }
-
-  const notesToShow = showAll ? notes : notes.filter((note) => note.important)
+  const handleNameChange = (event) => setNewName(event.target.value)
+  const handlePhoneChange = (event) => setNewPhone(event.target.value)
 
   return (
     <div>
-      <h1>Notes</h1>
-      <Notification message={errorMessage} />
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all'}
-        </button>
-      </div>
+      <h1>Phonebook</h1>
+      <form onSubmit={addPerson}>
+        <div>
+          Name: <input value={newName} onChange={handleNameChange} />
+        </div>
+        <button type="submit">Add</button>
+      </form>
+      <h2>Numbers</h2>
       <ul>
-        {notesToShow.map((note) => (
-          <Note
-            key={note.id}
-            note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)}
-          />
+        {persons.map((person) => (
+          <li key = {person.id}>{person.name} {person.phone}</li>
         ))}
       </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">save</button>
-      </form>
-      <Footer />
     </div>
   )
 }
