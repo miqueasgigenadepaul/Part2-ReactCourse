@@ -23,16 +23,34 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
+
+    const existingPerson = persons.find((person) => person.name === newName)
+
     const personObject = {
       name: newName,
       phone: newPhone,
     }
 
-    personService.create(personObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson))
-      setNewName('')
-      setNewPhone('')
-    })
+    if (existingPerson) {
+      personService.update(existingPerson.id, personObject)
+        .then((updatedPerson) => {
+          setPersons(persons.map((person) => (person.id === updatedPerson.id ? updatedPerson : person)))
+          setNewName('')
+          setNewPhone('')
+        })
+        .catch((error) => {
+          console.error('Error al actualizar la persona', error)
+        })
+    } else {
+      personService.create(personObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewPhone('')
+      })
+      .catch((error) => {
+        console.error('Error al agregar la persona', error)
+      })
+    }
   }
 
   const handleNameChange = (event) => setNewName(event.target.value)
