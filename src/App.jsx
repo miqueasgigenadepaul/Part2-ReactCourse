@@ -6,12 +6,10 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
-  const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
-      if (Array.isArray(initialPersons)) {
+      if (initialPersons) {
         setPersons(initialPersons)
       } else {
         console.error('La respuesta del servidor no es un array:', initialPersons)
@@ -46,6 +44,9 @@ const App = () => {
       <form onSubmit={addPerson}>
         <div>
           Name: <input value={newName} onChange={handleNameChange} />
+        </div>
+        <div>
+          Phone <input value={newPhone} onChange={handlePhoneChange} />
         </div>
         <button type="submit">Add</button>
       </form>
