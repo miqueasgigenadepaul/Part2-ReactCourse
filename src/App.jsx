@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Footer from './components/Footer'
 import personService from './services/persons'
 
 const App = () => {
@@ -7,6 +6,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [filter, setFilter] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -41,6 +41,7 @@ const App = () => {
         })
         .catch((error) => {
           console.error('Error al actualizar la persona', error)
+          setErrorMessage(error.response.data.error)
         })
     } else {
       personService.create(personObject).then((returnedPerson) => {
@@ -50,8 +51,11 @@ const App = () => {
       })
       .catch((error) => {
         console.error('Error al agregar la persona', error)
+        console.log(error.response.data.error)
+        setErrorMessage(error.response.data.error)
       })
     }
+
   }
 
   const filteredPersons = persons.filter(person =>
@@ -64,7 +68,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <br />
+      {errorMessage && <div className = 'error'>{errorMessage}</div>}
       <div>
         filter shown with: <input value = {filter} onChange = {handleFilterChange}/>
       </div>
