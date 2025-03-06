@@ -10,7 +10,7 @@ const App = () => {
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
-      console.log('datos recibidos del bakend', initialPersons)
+      console.log('datos recibidos del backend', initialPersons)
       if (initialPersons) {
         setPersons(initialPersons)
       } else {
